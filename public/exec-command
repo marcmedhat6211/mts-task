@@ -1,0 +1,12 @@
+#!/usr/bin/php
+<?php
+
+if (php_sapi_name() !== 'cli') {
+    exit;
+}
+
+require_once dirname(__DIR__) . "/src/Command/CreateTablesCommand.php";
+use App\Command\CreateTablesCommand;
+
+$createTablesCommand = new CreateTablesCommand();
+$createTablesCommand->runCommand($argv);
