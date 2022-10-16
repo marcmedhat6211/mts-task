@@ -6,37 +6,23 @@ class CustomerAddress
 {
     private int $id;
 
-    private int $buildingNumber = 0;
+    private ?string $address = '';
 
-    private string $province = '';
-
-    private int $customerId = 0;
+    private ?int $customerId = 0;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getBuildingNumber(): ?int
+    public function getAddress(): ?string
     {
-        return $this->buildingNumber;
+        return $this->address;
     }
 
-    public function setBuildingNumber(int $buildingNumber): self
+    public function setAddress(?string $address): self
     {
-        $this->buildingNumber = $buildingNumber;
-
-        return $this;
-    }
-
-    public function getProvince(): ?string
-    {
-        return $this->province;
-    }
-
-    public function setProvince(string $province): self
-    {
-        $this->province = $province;
+        $this->address = $address;
 
         return $this;
     }

@@ -4,17 +4,22 @@ namespace App\Command;
 
 use App\Core\Container;
 use App\Model\CommandInterface;
+use App\Repository\CustomerAddressRepository;
+use App\Repository\CustomerRepository;
+use App\Repository\InvoiceLineRepository;
+use App\Repository\InvoiceRepository;
+use App\Repository\ProductRepository;
 use App\Service\DatabaseService;
 
 class CreateTablesCommand implements CommandInterface
 {
     private static string $commandName = "app:create:db:tables";
 
-    const TABLE_CUSTOMER = "customer";
-    const TABLE_CUSTOMER_ADDRESS = "customer_address";
-    const TABLE_PRODUCT = "product";
-    const TABLE_INVOICE = "invoice";
-    const TABLE_INVOICE_LINE = "invoice_line";
+    const TABLE_CUSTOMER = CustomerRepository::TABLE_NAME;
+    const TABLE_CUSTOMER_ADDRESS = CustomerAddressRepository::TABLE_NAME;
+    const TABLE_PRODUCT = ProductRepository::TABLE_NAME;
+    const TABLE_INVOICE = InvoiceRepository::TABLE_NAME;
+    const TABLE_INVOICE_LINE = InvoiceLineRepository::TABLE_NAME;
 
     const TABLES = [
         self::TABLE_CUSTOMER,
@@ -44,11 +49,8 @@ class CreateTablesCommand implements CommandInterface
     {
         if (isset($argv[1])) {
             if ($argv[1] === self::$commandName) {
-                var_dump("heree");
-                die();
                 try {
                     $this->createTables();
-                    return;
                 } catch (\Exception $exception) {
                     echo "An error occurred while creating the tables because of this error {$exception->getMessage()}, reverting database to its initial state...";
                     try {
@@ -79,8 +81,7 @@ class CreateTablesCommand implements CommandInterface
         $config = [
             "id" => "INT AUTO_INCREMENT NOT NULL PRIMARY KEY",
             "customer_id" => "INT DEFAULT NULL",
-            "building_number" => "INT NOT NULL",
-            "province" => "VARCHAR(255) NOT NULL",
+            "address" => "VARCHAR(255) NOT NULL",
             "FOREIGN KEY (customer_id) REFERENCES customer(id)" => ""
         ];
         $this->databaseService->createTable($tableName, $config);

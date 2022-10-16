@@ -6,9 +6,9 @@ class InvoiceLine
 {
     private int $id;
 
-    private int $quantity = 0;
+    private ?int $quantity = 0;
 
-    private float $totalPrice = 0.0;
+    private ?float $totalPrice = 0.0;
 
     private ?int $productId;
 
@@ -24,7 +24,7 @@ class InvoiceLine
         return $this->quantity;
     }
 
-    public function setQuantity(int $quantity): self
+    public function setQuantity(?int $quantity): self
     {
         $this->quantity = $quantity;
 
@@ -36,7 +36,7 @@ class InvoiceLine
         return $this->totalPrice;
     }
 
-    public function setTotalPrice(float $totalPrice): self
+    public function setTotalPrice(?float $totalPrice): self
     {
         $this->totalPrice = $totalPrice;
 

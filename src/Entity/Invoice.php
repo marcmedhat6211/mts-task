@@ -8,7 +8,7 @@ class Invoice
 
     private ?\DateTime $date = null;
 
-    private float $grandTotal = 0.0;
+    private ?float $grandTotal = 0.0;
 
     private ?int $customerId = 0;
 
@@ -17,12 +17,19 @@ class Invoice
         return $this->id;
     }
 
+    public function setId(?int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(?\DateTimeInterface $date): self
     {
         $this->date = $date;
 
@@ -34,7 +41,7 @@ class Invoice
         return $this->grandTotal;
     }
 
-    public function setGrandTotal(float $grandTotal): self
+    public function setGrandTotal(?float $grandTotal): self
     {
         $this->grandTotal = $grandTotal;
 
@@ -46,7 +53,7 @@ class Invoice
         return $this->customerId;
     }
 
-    public function setCustomer(?int $customerId): self
+    public function setCustomerId(?int $customerId): self
     {
         $this->customerId = $customerId;
 

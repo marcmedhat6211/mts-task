@@ -6,9 +6,9 @@ class Product
 {
     private int $id;
 
-    private string $name = '';
+    private ?string $name = '';
 
-    private float $price = 0.0;
+    private ?float $price = 0.0;
 
     public function getId(): ?int
     {
@@ -20,7 +20,7 @@ class Product
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -32,7 +32,7 @@ class Product
         return $this->price;
     }
 
-    public function setPrice(float $price): self
+    public function setPrice(?float $price): self
     {
         $this->price = $price;
 
