@@ -24,10 +24,20 @@ abstract class AbstractRepository
     /**
      * @throws \Exception
      */
+    public function findAll(): array|bool
+    {
+        $tableName = constant($this->childClass . '::TABLE_NAME');
+
+        return $this->databaseService->select($tableName);
+    }
+
+    /**
+     * @throws \Exception
+     */
     public function findById(int|string $id): array|bool
     {
         $tableName = constant($this->childClass . '::TABLE_NAME');
-        $fields = ["id"];
+        $fields = [];
         $whereClause = "WHERE id = {$id}";
 
         return $this->databaseService->select($tableName, $fields, $whereClause);
@@ -56,6 +66,7 @@ abstract class AbstractRepository
                 $whereClause .= " AND ";
             }
         }
+
 
         return $this->databaseService->select($tableName, [], $whereClause);
     }

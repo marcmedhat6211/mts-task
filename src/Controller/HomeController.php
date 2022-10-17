@@ -3,11 +3,11 @@
 namespace App\Controller;
 
 use App\Command\CreateTablesCommand;
+use App\Command\SyncDataCommand;
 use App\Core\Container;
 use App\Core\Controller;
-use App\Repository\InvoiceRepository;
-use App\Service\DatabaseService;
 use App\Service\ExcelService;
+use App\Service\ObjectService;
 
 /**
  * @Inject databaseService
@@ -15,10 +15,19 @@ use App\Service\ExcelService;
 class HomeController extends Controller
 {
     private Container $container;
+    private CreateTablesCommand $createTablesCommand;
+    private SyncDataCommand $syncDataCommand;
+    private ObjectService $objectService;
 
+    /**
+     * @throws \Exception
+     */
     public function __construct()
     {
         $this->container = new Container();
+        $this->createTablesCommand = $this->container->get(CreateTablesCommand::class);
+        $this->syncDataCommand = $this->container->get(SyncDataCommand::class);
+        $this->objectService = $this->container->get(ObjectService::class);
     }
 
     /**
@@ -26,42 +35,43 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $databaseService = $this->container->get(DatabaseService::class);
-        $createTablesCommand =  $this->container->get(CreateTablesCommand::class);
-        $excelService = $this->container->get(ExcelService::class);
-        $invoiceRepo = $this->container->get(InvoiceRepository::class);
+        $this->createTablesCommand->revert(); // removes all tables if exists
+        try {
+            $this->createTablesCommand->createTables(); // creates the database tables
+            echo "Created 5 database tables successfully";
+            echo "</br>";
+            echo "Table Names are: ";echo "</br>";
+            echo "customer";echo "</br>";
+            echo "customer_address";echo "</br>";
+            echo "invoice";echo "</br>";
+            echo "invoice_line";echo "</br>";
+            echo "product";echo "</br>";
+            echo "=====================================================================";echo "</br>";echo "</br>";echo "</br>";
+        } catch (\Exception $exception) {
+            echo "A Server Error Occurred while creating the tables because of {$exception->getMessage()}, now reverting database to the initial state...";
+            try {
+                $this->createTablesCommand->revert(); // removes all tables if exists
+                echo "All tables where removed from database successfully";
+                die();
+            } catch (\Exception $exception) {
+                echo "A Server Error Occurred while reverting the database state because of {$exception->getMessage()}, please remove the tables manually from the database";
+                die();
+            }
+        }
 
         try {
-            $excelService->addFileDataToDatabase("data.xlsx");
-            echo "data added";
-            die();
+            $this->syncDataCommand->doRun(); // takes the data from the Excel file, maps them, and inserts them to the database
+            echo "Data was fetched from the excel file and was persisted successfully to the newly created tables in the database";echo "</br>";
+            echo "==================================================================================================================";echo "</br>";echo "</br>";echo "</br>";
+            echo "<h1>Invoices Data</h1>";echo "</br>";
         } catch (\Exception $exception) {
-            echo $exception->getMessage();
+            echo "An error occurred while fetching data and adding it to the database because of {$exception->getMessage()}";
             die();
         }
 
-
-//        $createTablesCommand->revert();
-//        $createTablesCommand->createTables();
-//        echo "tables created";
-//        die();
-
-
-//
-//
-//        $result = $databaseService->insert(ProductRepository::TABLE_NAME, [
-//            "name" => "test",
-//            "price" => 60
-//        ]);
-//        var_dump($result);
-//        die();
-//
-//        $id = $invoiceRepo->findById(1);
-//        $result = $invoiceRepo->isInvoiceExists(1);
-//
-//
-//        $this->view("home/index", [
-//            "name" => "marc"
-//        ]);
+        $invoices = json_encode($this->objectService->getDataInArray());
+        $this->view("home/index", [
+            "invoices" => $invoices
+        ]);
     }
 }

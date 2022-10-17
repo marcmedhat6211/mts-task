@@ -4,9 +4,10 @@ namespace App\Repository;
 
 use App\Core\Container;
 use App\Entity\InvoiceLine;
+use App\Model\AbstractRepository;
 use App\Service\DatabaseService;
 
-class InvoiceLineRepository
+class InvoiceLineRepository extends AbstractRepository
 {
     const TABLE_NAME = "invoice_line";
 
@@ -18,6 +19,7 @@ class InvoiceLineRepository
      */
     public function __construct()
     {
+        parent::__construct();
         $this->container = new Container();
         $this->databaseService = $this->container->get(DatabaseService::class);
     }

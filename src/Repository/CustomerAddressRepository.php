@@ -43,8 +43,7 @@ class CustomerAddressRepository extends AbstractRepository
     public function isCustomerAddressExistsByAddress(string $address): bool // this should be an email but there is no email in the file
     {
         $existingCustomerAddress = $this->findBy(["address" => $address]);
-
-        if (is_array($existingCustomerAddress) && array_key_exists("id", $existingCustomerAddress)) {
+        if (count($existingCustomerAddress) > 0) {
             return true;
         }
 

@@ -44,7 +44,7 @@ class ProductRepository extends AbstractRepository
     {
         $existingProduct = $this->findBy(["name" => $name]);
 
-        if (is_array($existingProduct) && array_key_exists("id", $existingProduct)) {
+        if (count($existingProduct) > 0) {
             return true;
         }
 

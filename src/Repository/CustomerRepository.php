@@ -39,19 +39,11 @@ class CustomerRepository extends AbstractRepository
     /**
      * @throws \Exception
      */
-    public function findById(int|string $id): array|bool
-    {
-        return $this->findById($id);
-    }
-
-    /**
-     * @throws \Exception
-     */
     public function isCustomerExistsByName(string $customerName): bool // this should be an email but there is no email in the file
     {
         $existingCustomer = $this->findBy(["name" => $customerName]);
 
-        if (is_array($existingCustomer) && array_key_exists("id", $existingCustomer)) {
+        if (count($existingCustomer) > 0) {
             return true;
         }
 

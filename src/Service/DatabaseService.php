@@ -117,7 +117,8 @@ class DatabaseService
     public function select(
         string $tableName,
         array  $fields = [],
-        string $whereClause = ""
+        string $whereClause = "",
+        string $extraOptions = "",
     ): array|bool
     {
         $sql = "SELECT ";
@@ -135,14 +136,18 @@ class DatabaseService
             $sql .= "* ";
         }
 
-        $sql .= "FROM {$tableName} ";
+        $sql .= "FROM {$tableName}";
         if (Validate::notNull($whereClause)) {
-            $sql .= "{$whereClause}";
+            $sql .= " {$whereClause}";
         }
+        if (Validate::notNull($extraOptions)) {
+            $sql .= " {$extraOptions}";
+        }
+        $sql .= ";";
 
         $queryResult = $this->executeQuery($sql);
 
-        return $queryResult->fetch();
+        return $queryResult->fetchAll();
     }
 
     //==================================================== PRIVATE METHODS =============================================

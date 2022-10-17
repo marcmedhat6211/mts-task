@@ -137,7 +137,7 @@ class ExcelService
         $customerId = null;
         $existingCustomer = $this->customerRepository->findBy(["name" => $customer->getName()]);
         if ($existingCustomer) {
-            $customerId = $existingCustomer["id"];
+            $customerId = $existingCustomer[0]["id"];
         }
 
         $customerAddress = CustomerAddressFactory::create(["customerId" => $customerId, "address" => $customerAddressData["address"]["value"]]);
@@ -163,13 +163,13 @@ class ExcelService
         $invoiceId = null;
         $existingInvoice = $this->invoiceRepository->findBy(["id" => $invoice->getId()]);
         if ($existingInvoice) {
-            $invoiceId = $existingInvoice["id"];
+            $invoiceId = $existingInvoice[0]["id"];
         }
 
         $productId = null;
         $existingProduct = $this->productRepository->findBy(["name" => $product->getName()]);
         if ($existingProduct) {
-            $productId = $existingProduct["id"];
+            $productId = $existingProduct[0]["id"];
         }
 
         if (count($invoiceLineData) > 0) {

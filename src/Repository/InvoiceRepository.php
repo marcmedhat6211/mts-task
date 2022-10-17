@@ -43,7 +43,7 @@ class InvoiceRepository extends AbstractRepository
     {
         $existingInvoice = $this->findById($invoiceId);
 
-        if (is_array($existingInvoice) && array_key_exists("id", $existingInvoice)) {
+        if (count($existingInvoice) > 0) {
             return true;
         }
 
