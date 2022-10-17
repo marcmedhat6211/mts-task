@@ -4,8 +4,3 @@
 if (php_sapi_name() !== 'cli') {
     exit;
 }
-
-use App\Command\CreateTablesCommand;
-
-$createTablesCommand = new CreateTablesCommand();
-$createTablesCommand->runCommand($argv);

@@ -8,9 +8,6 @@ use App\Core\Container;
 use App\Core\Controller;
 use App\Service\ObjectService;
 
-/**
- * @Inject databaseService
- */
 class HomeController extends Controller
 {
     private Container $container;
