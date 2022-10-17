@@ -6,7 +6,6 @@ use App\Command\CreateTablesCommand;
 use App\Command\SyncDataCommand;
 use App\Core\Container;
 use App\Core\Controller;
-use App\Service\ExcelService;
 use App\Service\ObjectService;
 
 /**
