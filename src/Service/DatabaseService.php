@@ -192,7 +192,6 @@ class DatabaseService
             $connection = $this->connect();
             return $connection->query($sql);
         } catch (\Exception $exception) {
-            var_dump($exception->getMessage());
             throw new \Exception("An Error occurred while executing the database query");
         }
     }
